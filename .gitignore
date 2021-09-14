@@ -1,2 +1,3 @@
 cases.csv
 package-lock.json
+*/*.min.js

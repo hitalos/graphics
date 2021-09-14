@@ -1,3 +1,7 @@
+import {
+	select,
+} from 'd3'
+
 (() => {
 	class Gauge {
 		constructor(el) {
@@ -8,7 +12,7 @@
 			this.startColor = el.dataset['startColor'] ? el.dataset['startColor'] : '#05a'
 			this.endColor = el.dataset['endColor'] ? el.dataset['endColor'] : '#0a5'
 
-			this.svg = d3.select(el)
+			this.svg = select(el)
 				.append('svg')
 				.attr('width', '220')
 				.attr('height', '220')

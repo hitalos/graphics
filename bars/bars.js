@@ -1,3 +1,11 @@
+import {
+	csv,
+	max,
+	select,
+	scaleBand,
+	scaleLinear,
+} from 'd3'
+
 (() => {
 	const sortByConfirmed = document.getElementById('sortByConfirmed')
 	const sortByDeaths = document.getElementById('sortByDeaths')
@@ -26,15 +34,14 @@
 		}
 
 		createSVG(parent) {
-			this.svg = d3.select(parent)
+			this.width = parent.dataset['width']
+			this.height = parent.dataset['height']
+			this.svg = select(parent)
 				.append('svg')
-				.attr('width', '600')
-				.attr('height', '400')
-				.attr('viewBox', '0 0 600 400')
+				.attr('width', this.width)
+				.attr('height', this.height)
+				.attr('viewBox', `0 0 ${this.width} ${this.height}`)
 				.style('filter', 'drop-shadow(3px 3px 2px rgb(0 0 0 / .4))')
-
-			this.width = this.svg.attr('viewBox').split(' ')[2]
-			this.height = this.svg.attr('viewBox').split(' ')[3]
 
 			this.innerWidth = this.width - margins.left - margins.right
 			this.innerHeight = this.height - margins.top - margins.bottom
@@ -52,20 +59,20 @@
 		}
 
 		getDataAndMount(url) {
-			d3.csv(url).then((data) => {
+			csv(url).then((data) => {
 				this.data = data
 				this.data.sort((a, b) => yValues(a) - yValues(b))
 
-				this.scaleX = d3.scaleBand()
+				this.scaleX = scaleBand()
 					.domain(this.data.map(xValues))
 					.range([0, this.innerWidth])
 					.padding(0.1)
 
-				this.scaleY = d3.scaleLinear()
-					.domain([d3.max(this.data.map(yValues)), 0])
+				this.scaleY = scaleLinear()
+					.domain([max(this.data.map(yValues)), 0])
 					.range([0, this.innerHeight])
 
-				this.scaleColor = d3.scaleLinear()
+				this.scaleColor = scaleLinear()
 					.domain([0, this.data.length])
 					.range(['#597', '#3333aa'])
 
@@ -100,8 +107,8 @@
 
 			bars.enter()
 				.append('rect')
-				.on('mouseover', (ev) => d3.select(ev.target).style('stroke', 'black'))
-				.on('mouseout', (ev) => d3.select(ev.target).style('stroke', 'none'))
+				.on('mouseover', (ev) => select(ev.target).style('stroke', 'black'))
+				.on('mouseout', (ev) => select(ev.target).style('stroke', 'none'))
 				.style('fill', (_, i) => this.scaleColor(i))
 				.attr('x', (_, i) => i * this.scaleX.step())
 				.attr('width', this.scaleX.bandwidth())
@@ -135,6 +142,7 @@
 				.append('text')
 				.text((d) => xValues(d))
 				.style('font-size', '.7em')
+				.style('cursor', 'help')
 				.attr('text-anchor', 'middle')
 				.attr('x', (_, i) => (i * this.scaleX.step()) + this.scaleX.step() / 2)
 
