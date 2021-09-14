@@ -1,5 +1,8 @@
 all: gauge/gauge.min.js bars/bars.min.js area/area.min.js
 
+run:
+	go run ./main.go
+
 gauge/gauge.min.js:
 	./node_modules/.bin/esbuild --minify --bundle --outfile=gauge/gauge.min.js gauge/gauge.js
 
