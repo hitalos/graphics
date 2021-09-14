@@ -1,15 +1,23 @@
 all: gauge/gauge.min.js bars/bars.min.js area/area.min.js
 
-run:
+clean:
+	rm -f */*.min.js* cases.csv
+
+run: all
 	go run ./main.go
 
+cases.csv:
+	./getCases.sh
+
+ESBUILD=./node_modules/.bin/esbuild --minify --bundle --sourcemap
+
 gauge/gauge.min.js:
-	./node_modules/.bin/esbuild --minify --bundle --outfile=gauge/gauge.min.js gauge/gauge.js
+	$(ESBUILD) --outfile=gauge/gauge.min.js gauge/gauge.js
 
 bars/bars.min.js:
-	./node_modules/.bin/esbuild --minify --bundle --outfile=bars/bars.min.js bars/bars.js
+	$(ESBUILD) --outfile=bars/bars.min.js bars/bars.js
 
 area/area.min.js:
-	./node_modules/.bin/esbuild --minify --bundle --outfile=area/area.min.js area/area.js
+	$(ESBUILD) --outfile=area/area.min.js area/area.js
 
-.PHONY: gauge/gauge.min.js bars/bars.min.js area/area.min.js
+.PHONY: cases.csv gauge/gauge.min.js bars/bars.min.js area/area.min.js
