@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/csv"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -17,23 +18,10 @@ type record struct {
 	IBGE       string `json:"ibge_code"`
 }
 
-func csvToJson(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	f, err := os.Open("cases.csv")
+func csvToJson(w io.Writer, r io.Reader) error {
+	list, err := csv.NewReader(r).ReadAll()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Println(err)
-
-		return
-	}
-
-	list, err := csv.NewReader(f).ReadAll()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Println(err)
-
-		return
+		return err
 	}
 
 	records := []record{}
@@ -52,18 +40,32 @@ func csvToJson(w http.ResponseWriter, r *http.Request) {
 			})
 	}
 
-	if err = json.NewEncoder(w).Encode(records); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		log.Println(err)
+	return json.NewEncoder(w).Encode(records)
+}
 
-		return
+func getJSON(csvfile string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		f, err := os.Open(csvfile)
+		if err != nil {
+			return
+		}
+		defer f.Close()
+
+		w.Header().Set("Content-Type", "application/json")
+
+		if err := csvToJson(w, f); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			log.Println(err)
+
+			return
+		}
 	}
 }
 
 func main() {
 	h := http.FileServer(http.Dir("./"))
 	mux := http.NewServeMux()
-	mux.HandleFunc("/cases.json", csvToJson)
+	mux.HandleFunc("/cases.json", getJSON("cases.csv"))
 
 	mux.Handle("/", h)
 
