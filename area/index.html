@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Area</title>
+	<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+	<main>
+		<div style="float: left">
+			<p>Mostrar e ordenar por:</p>
+			<label for="sortByConfirmed">Casos</label>
+			<input type="radio" name="sortBy" id="sortByConfirmed" checked>
+			<label for="sortByDeaths">Mortes</label>
+			<input type="radio" name="sortBy" id="sortByDeaths">
+		</div>
+		<div class="area" data-url="../cases.json" data-width="1080" data-height="400" title="Covid nos estados"></div>
+	</main>
+	<script src="area.min.js"></script>
+</body>
+</html>
