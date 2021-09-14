@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Slides</title>
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background-color: silver;
+		}
+
+		.container {
+			border: 10px solid #ffffff;
+			border-radius: 8px;
+			box-shadow: 10px 25px 30px rgba(0,0,0,0.3);
+			left: 50%;
+			overflow: hidden;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%,-50%);
+			width: 85vmin;
+	}
+
+	.wrapper {
+		animation: slide 16s infinite;
+		display: flex;
+		height: 500px;
+		width: 100%;
+	}
+
+	img {
+		min-width: 100%;
+		max-height: 500px;
+		object-fit: cover;
+	}
+
+	@keyframes slide {
+		0% { transform: translateX(0); }
+		25% { transform: translateX(0); }
+		30% { transform: translateX(-100%); }
+		50% { transform: translateX(-100%); }
+		55% { transform: translateX(-200%); }
+		75% { transform: translateX(-200%); }
+		80% { transform: translateX(-300%); }
+		100% { transform: translateX(-300%); }
+	}
+	</style>
+</head>
+<body>
+	<main>
+		<div class="container">
+			<div class="wrapper">
+				<img src="https://image.freepik.com/fotos-gratis/pizza-pizza-cheia-de-tomates-salame-e-azeitonas_140725-1200.jpg" alt="pizza">
+				<img src="https://image.freepik.com/fotos-gratis/salada-grega-com-legumes-frescos-queijo-feta-e-azeitonas-kalamata_2829-10848.jpg" alt="salada">
+				<img src="https://image.freepik.com/fotos-gratis/hamburguer-de-vista-frontal-em-um-carrinho_141793-15542.jpg" alt="sanduíche">
+				<img src="https://image.freepik.com/fotos-gratis/bolo-de-queijo_74190-5877.jpg" alt="sobremesa">
+			</div>
+		</div>
+	</main>
+</body>
+</html>
