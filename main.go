@@ -69,5 +69,7 @@ func main() {
 
 	mux.Handle("/", h)
 
-	http.ListenAndServe(":8000", mux)
+	if err := http.ListenAndServe(":8000", mux); err != nil {
+		log.Fatalln(err)
+	}
 }
