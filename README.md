@@ -1,3 +1,5 @@
+# Graphics
+
 ## Dependencies
 
 * NodeJS
@@ -14,3 +16,13 @@ make
 ## Testing
 
 Use golang server (main.go) or other static file server to navigate in this folder.
+
+```shell
+make run
+```
+
+or
+
+```shell
+go run .
+```

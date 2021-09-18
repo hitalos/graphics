@@ -1,10 +1,12 @@
-all: gauge/gauge.min.js bars/bars.min.js area/area.min.js
+all: updates gauge/gauge.min.js bars/bars.min.js area/area.min.js
 
 clean:
 	rm -f */*.min.js* cases.csv
 
 run: all
 	go run ./main.go
+
+updates: cases.csv
 
 cases.csv:
 	./getCases.sh
