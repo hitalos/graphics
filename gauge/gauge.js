@@ -7,7 +7,7 @@ class Gauge {
 	constructor(el) {
 		if (el.title === '') el.title = el.innerText
 		el.innerText = ''
-		this.value = el.dataset['value']
+		this.value = el.dataset['value'] || 0
 		this.id = Math.random().toString(36).substr(2)
 		this.startColor = el.dataset['startColor'] ? el.dataset['startColor'] : '#05a'
 		this.endColor = el.dataset['endColor'] ? el.dataset['endColor'] : '#0a5'
@@ -18,6 +18,15 @@ class Gauge {
 			.attr('height', '220')
 			.attr('viewBox', '-120 -120 240 240')
 			.style('filter', 'drop-shadow(5px 5px 5px rgb(0 0 0 / .4))')
+
+		this.svg
+			.append('circle')
+			.attr('cy', 0)
+			.attr('cx', 0)
+			.attr('r', 100)
+			.attr('fill', 'none')
+			.attr('stroke-width', 1)
+			.attr('stroke', '#ddd')
 
 		this.defText().defCircle().defGradient()
 
