@@ -1,4 +1,4 @@
-all: updates gauge/gauge.min.js bars/bars.min.js area/area.min.js
+all: area bars gauge
 
 clean:
 	rm -f */*.min.js* cases.csv
@@ -6,20 +6,18 @@ clean:
 run: all
 	go run ./main.go
 
-updates: cases.csv
+update_cases:
+	$(MAKE) -B cases.csv
 
 cases.csv:
 	./getCases.sh
 
 ESBUILD=./node_modules/.bin/esbuild --minify --bundle --sourcemap
 
-gauge/gauge.min.js:
-	$(ESBUILD) --outfile=gauge/gauge.min.js gauge/gauge.js
+*/*.min.js:
+	@$(ESBUILD) --outfile="$@" "$(@:.min.js=.js)"
 
-bars/bars.min.js:
-	$(ESBUILD) --outfile=bars/bars.min.js bars/bars.js
+area bars gauge:
+	$(MAKE) -B $@/$@.min.js
 
-area/area.min.js:
-	$(ESBUILD) --outfile=area/area.min.js area/area.js
-
-.PHONY: cases.csv gauge/gauge.min.js bars/bars.min.js area/area.min.js
+.PHONY: area bars gauge */*.min.js
