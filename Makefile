@@ -1,4 +1,4 @@
-all: area bars gauge
+all: area bars gallery gauge
 
 clean:
 	rm -f */*.min.js* cases.csv
@@ -17,7 +17,7 @@ ESBUILD=./node_modules/.bin/esbuild --minify --bundle --sourcemap
 */*.min.js:
 	@$(ESBUILD) --outfile="$@" "$(@:.min.js=.js)"
 
-area bars gauge:
+area bars gallery gauge:
 	$(MAKE) -B $@/$@.min.js
 
-.PHONY: area bars gauge */*.min.js
+.PHONY: area bars gallery gauge */*.min.js
