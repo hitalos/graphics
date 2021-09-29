@@ -69,6 +69,7 @@ func main() {
 
 	mux.Handle("/", h)
 
+	log.Println("Listening on http://localhost:8000")
 	if err := http.ListenAndServe(":8000", mux); err != nil {
 		log.Fatalln(err)
 	}
