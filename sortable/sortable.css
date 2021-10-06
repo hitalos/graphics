@@ -1,0 +1,33 @@
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.sortable-list {
+	display: grid;
+	min-height: 100vh;
+	list-style-type: none;
+	margin: auto;
+	max-width: fit-content;
+	padding: 0;
+}
+
+.sortable-list li div {
+	border: 1px silver solid;
+	cursor: pointer;
+	padding: .5em;
+}
+
+.sortable-list li div::after {
+	content: "=";
+	float: right;
+	margin-left: 1em;
+}
+
+.sortable-list li div:hover {
+	background-color: #dbf6ff;
+}
+
+.sortable-list li div.over {
+	background-color: aquamarine;
+}
