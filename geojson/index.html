@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="geojson.css">
+	<title>GeoJSON projections</title>
+</head>
+<body>
+	<div id="graph"></div>
+	<select id="projections">
+		<option value="A">Azimuthal Equidistant</option>
+		<option value="C">Conic Conformal</option>
+		<option value="CEA">Conic Equal Area</option>
+		<option value="E">Equiretangular</option>
+		<option value="M" selected>Mercator</option>
+	</select>
+	<p>Maps obtained from: <a href="https://geojson-maps.ash.ms/">geojson-maps.ash.ms</a> and filtered with <a href="https://stedolan.github.io/jq/" title="cat custom.geo.json | jq --compact-output '{ type: .type, features: [ .features[] | { type: .type, properties: .properties | { name: .name, pop_est: .pop_est }, geometry: .geometry } ] }' > geojson/world.geo.json">jq</a>.</p>
+	<script src="geojson.min.js"></script>
+</body>
+</html>

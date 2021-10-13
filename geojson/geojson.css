@@ -1,0 +1,16 @@
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+svg {
+	height: 90vh;
+	width: 100%;
+}
+path {
+	stroke: silver;
+	stroke-width: 0.5px;
+}
+select {
+	font-size: 2em;
+}

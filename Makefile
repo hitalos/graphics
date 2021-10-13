@@ -1,4 +1,4 @@
-all: area bars sortable gallery gauge
+all: area bars sortable gallery gauge geojson
 
 clean:
 	rm -f */*.min.js*
@@ -14,7 +14,7 @@ cases.csv:
 
 ESBUILD=./node_modules/.bin/esbuild --minify --bundle --sourcemap
 
-area bars sortable gallery gauge:
+area bars sortable gallery gauge geojson:
 	@$(ESBUILD) --outfile="$@/$@.min.js" "$@/$@.js"
 
-.PHONY: area bars sortable gallery gauge */*.js
+.PHONY: area bars sortable gallery gauge geojson */*.js
