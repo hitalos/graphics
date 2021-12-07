@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"time"
 )
 
@@ -63,6 +64,21 @@ func getJSON(csvfile string) http.HandlerFunc {
 	}
 }
 
+func loadValue(command string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cmd := exec.Command("sh", "-c", command)
+
+		output, err := cmd.Output()
+		if err != nil {
+			log.Println(err)
+
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write(output)
+	}
+}
 
 func logger(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -71,13 +87,19 @@ func logger(h http.Handler) http.Handler {
 		log.Println(r.Method, r.URL.Path, time.Since(t))
 	})
 }
+
 func main() {
 	h := http.FileServer(http.Dir("./"))
 	mux := http.NewServeMux()
 	mux.HandleFunc("/cases.json", getJSON("cases.csv"))
 
+	if len(os.Args) > 1 {
+		mux.HandleFunc("/sensors.json", loadValue(os.Args[1]))
+	}
+
 	mux.Handle("/", h)
 
+	log.Println("Listening on http://0.0.0.0:8000")
 	if err := http.ListenAndServe(":8000", logger(mux)); err != nil {
 		log.Fatalln(err)
 	}
