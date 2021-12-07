@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sensors</title>
+	<link rel="stylesheet" href="../styles.css">
+	<style>
+		.sensors svg text {
+			fill: silver;
+		}
+
+		g.axis line {
+			opacity: .4;
+			stroke: silver;
+		}
+		p {
+			background-color: darkslategrey;
+			color: white;
+			margin: auto;
+			padding: 20px;
+		}
+	</style>
+</head>
+<body style="background-color: black;">
+	<main>
+		<div class="sensors" data-url="/sensors.json" data-field="cpu" data-interval="2" data-history-limit="180" data-min-limit="40" data-suffix=" °C" data-width="1280" data-height="400" title="Histórico de temperatura da CPU"></div>
+		<div class="sensors" data-url="/sensors.json" data-field="fan" data-interval="2" data-history-limit="180" data-min-limit="2000" data-suffix=" RPM" data-width="1280" data-height="400" title="Histórico de velocidade do FAN"></div>
+		<p>Ex.: <code>./server "sensors -j | jq '{cpu:.\"k10temp-pci-00c3\".Tctl.temp1_input,fan:.\"nct6797-isa-0a20\".fan2.fan2_input}'</code></p>
+	</main>
+	<script src="sensors.min.js"></script>
+</body>
+</html>
