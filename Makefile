@@ -1,5 +1,8 @@
 all: area bars sortable gallery gauge geojson
 
+server:
+	go build -ldflags '-s -w' -o server ./main.go
+
 clean:
 	rm -f */*.min.js*
 
