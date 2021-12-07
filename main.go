@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 type record struct {
@@ -62,6 +63,14 @@ func getJSON(csvfile string) http.HandlerFunc {
 	}
 }
 
+
+func logger(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		t := time.Now()
+		h.ServeHTTP(w, r)
+		log.Println(r.Method, r.URL.Path, time.Since(t))
+	})
+}
 func main() {
 	h := http.FileServer(http.Dir("./"))
 	mux := http.NewServeMux()
@@ -69,8 +78,7 @@ func main() {
 
 	mux.Handle("/", h)
 
-	log.Println("Listening on http://localhost:8000")
-	if err := http.ListenAndServe(":8000", mux); err != nil {
+	if err := http.ListenAndServe(":8000", logger(mux)); err != nil {
 		log.Fatalln(err)
 	}
 }
