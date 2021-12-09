@@ -9,7 +9,7 @@ import {
 
 const updateIntervalMs = 2000
 const historyLimit = 180
-const margins = { top: 60, left: 20, bottom: 40, right: 80 }
+const margins = { top: 60, left: 20, bottom: 40, right: 98 }
 
 class Sensor {
 	constructor(el) {
@@ -36,7 +36,6 @@ class Sensor {
 		this.maxValue = this.minLimit
 		this.svg = select(el).append('svg')
 			.attr('width', this.width)
-			.attr('height', this.height)
 			.attr('viewBox', `0 0 ${this.width} ${this.height}`)
 			// .style('filter', 'drop-shadow(3px 3px 2px rgb(0 0 0 / .4))')
 
@@ -145,6 +144,7 @@ class Sensor {
 
 	setAxis() {
 		const axis = axisRight(this.scaleY)
+			.ticks(10)
 			.tickSize(-this.innerWidth)
 			.tickFormat((d) => `${d}${this.suffix}`)
 		this.axisGroup.call(axis)
