@@ -8,16 +8,19 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"time"
+	"strconv"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 type record struct {
 	Date       string `json:"date"`
 	State      string `json:"state"`
-	Confirmed  string `json:"confirmed"`
-	Deaths     string `json:"deaths"`
-	Population string `json:"population"`
-	IBGE       string `json:"ibge_code"`
+	Confirmed  uint64 `json:"confirmed"`
+	Deaths     uint64 `json:"deaths"`
+	Population uint64 `json:"population"`
+	IBGE       uint64 `json:"ibge_code"`
 }
 
 func csvToJson(w io.Writer, r io.Reader) error {
@@ -31,14 +34,18 @@ func csvToJson(w io.Writer, r io.Reader) error {
 		if row == 0 {
 			continue
 		}
+		confirmed, _ := strconv.ParseUint(l[2], 10, 64)
+		deaths, _ := strconv.ParseUint(l[3], 10, 64)
+		population, _ := strconv.ParseUint(l[4], 10, 64)
+		ibge, _ := strconv.ParseUint(l[5], 10, 64)
 		records = append(records,
 			record{
 				Date:       l[0],
 				State:      l[1],
-				Confirmed:  l[2],
-				Deaths:     l[3],
-				Population: l[4],
-				IBGE:       l[5],
+				Confirmed:  confirmed,
+				Deaths:     deaths,
+				Population: population,
+				IBGE:       ibge,
 			})
 	}
 
@@ -80,27 +87,20 @@ func loadValue(command string) http.HandlerFunc {
 	}
 }
 
-func logger(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		t := time.Now()
-		h.ServeHTTP(w, r)
-		log.Println(r.Method, r.URL.Path, time.Since(t))
-	})
-}
-
 func main() {
-	h := http.FileServer(http.Dir("./"))
-	mux := http.NewServeMux()
-	mux.HandleFunc("/cases.json", getJSON("cases.csv"))
+	r := chi.NewRouter()
+	r.Use(middleware.Logger, middleware.Compress(6))
+
+	r.Get("/cases.json", getJSON("cases.csv"))
 
 	if len(os.Args) > 1 {
-		mux.HandleFunc("/sensors.json", loadValue(os.Args[1]))
+		r.Get("/sensors.json", loadValue(os.Args[1]))
 	}
 
-	mux.Handle("/", h)
+	r.Handle("/*", http.FileServer(http.Dir("./")))
 
 	log.Println("Listening on http://0.0.0.0:8000")
-	if err := http.ListenAndServe(":8000", logger(mux)); err != nil {
+	if err := http.ListenAndServe(":8000", r); err != nil {
 		log.Fatalln(err)
 	}
 }

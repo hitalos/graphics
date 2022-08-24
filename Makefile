@@ -20,4 +20,4 @@ ESBUILD=./node_modules/.bin/esbuild --minify --bundle --sourcemap
 area bars gallery gauge geojson sensors sortable:
 	@$(ESBUILD) --outfile="$@/$@.min.js" "$@/$@.js"
 
-.PHONY: area bars gallery gauge geojson sensors sortable */*.js
+.PHONY: area bars gallery gauge geojson sensors sortable */*.js server
