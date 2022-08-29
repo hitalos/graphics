@@ -13,8 +13,8 @@ const sortByDeaths = document.getElementById('sortByDeaths')
 
 const margins = { top: 60, left: 40, bottom: 40, right: 20 }
 
-const cValues = (d) => parseInt(d.confirmed, 10)
-const dValues = (d) => parseInt(d.deaths, 10)
+const cValues = (d) => +d.confirmed
+const dValues = (d) => +d.deaths
 const yValues = (d) => sortByConfirmed.checked ? cValues(d) : dValues(d)
 const xValues = (d) => d.state
 const updateValues = (d) => (new Date(...d.date.split('-'))).toLocaleDateString()

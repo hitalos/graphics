@@ -11,8 +11,8 @@ const sortByDeaths = document.getElementById('sortByDeaths')
 
 const margins = { top: 50, left: 10, bottom: 30, right: 10 }
 
-const cValues = (d) => parseInt(d.confirmed, 10)
-const dValues = (d) => parseInt(d.deaths, 10)
+const cValues = (d) => d.confirmed
+const dValues = (d) => d.deaths
 const yValues = (d) => sortByConfirmed.checked ? cValues(d) : dValues(d)
 const xValues = (d) => d.state
 const updateValues = (d) => (new Date(...d.date.split('-'))).toLocaleDateString()
@@ -58,7 +58,13 @@ class Bars {
 	}
 
 	getDataAndMount(url) {
-		csv(url).then((data) => {
+		const parseRow = (d) => {
+			d.confirmed = +d.confirmed
+			d.deaths = +d.deaths
+			return d
+		}
+
+		csv(url, parseRow).then((data) => {
 			this.data = data
 			this.data.sort((a, b) => yValues(a) - yValues(b))
 
