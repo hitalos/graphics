@@ -22,21 +22,18 @@ class DataTable {
 		this.data.sort(this.sort(parent.dataset.sortCol || this.columns[0]))
 
 		const table = select(parent).append('table')
-		const thead = table.append('thead')
 		const rows = table.append('tbody')
 			.selectAll('tr')
 			.data(this.data)
-			.enter()
-			.append('tr')
+			.join('tr')
 
 		this.columns.forEach((col) => { rows.append('td').text((d) => d[col]) })
 
-		thead.append('tr')
+		table.append('thead')
+			.append('tr')
 			.selectAll('th')
 			.data(this.columns)
-			.enter()
-			.append('th')
-			.style('cursor', 'pointer')
+			.join('th')
 			.text((d) => d)
 			.on('click', (_, col) => { rows.sort(this.sort(col)) })
 	}
