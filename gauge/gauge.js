@@ -9,8 +9,8 @@ class Gauge {
 		el.innerText = ''
 		this.value = el.dataset['value'] || 0
 		this.id = Math.random().toString(36).substr(2)
-		this.startColor = el.dataset['startColor'] ? el.dataset['startColor'] : '#05a'
-		this.endColor = el.dataset['endColor'] ? el.dataset['endColor'] : '#0a5'
+		this.startColor = el.dataset['startColor'] || '#05a'
+		this.endColor = el.dataset['endColor'] || '#0a5'
 
 		this.svg = select(el)
 			.append('svg')

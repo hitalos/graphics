@@ -23,17 +23,17 @@ class Area {
 	constructor(parent) {
 		parent.innerText = ''
 
-		this.startColor = parent.dataset['startColor'] ? parent.dataset['startColor'] : '#05a'
-		this.endColor = parent.dataset['endColor'] ? parent.dataset['endColor'] : '#0a5'
-		this.id = Math.random().toString(36).substr(2)
+		this.startColor = parent.dataset['startColor'] || '#05a'
+		this.endColor = parent.dataset['endColor'] || '#0a5'
+		this.id = Math.random().toString(36).substring(2)
 
 		this.createSVG(parent)
 		this.defGradient()
 		this.getDataAndMount(parent.dataset['url'])
 
 		sortByConfirmed.addEventListener('change', () => {
-			this.startColor = parent.dataset['startColor'] ? parent.dataset['startColor'] : '#05a'
-			this.endColor = parent.dataset['endColor'] ? parent.dataset['endColor'] : '#0a5'
+			this.startColor = parent.dataset['startColor'] || '#05a'
+			this.endColor = parent.dataset['endColor'] || '#0a5'
 			this.svg.select('defs').remove()
 			this.defGradient()
 			this.getDataAndMount(parent.dataset['url'])
