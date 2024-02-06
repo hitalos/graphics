@@ -1,4 +1,4 @@
-all: area bars datatable gallery gauge geojson sensors sortable
+all: area bars circles datatable gallery gauge geojson sensors sortable
 
 server:
 	go build -ldflags '-s -w' -o server ./main.go
@@ -17,7 +17,7 @@ cases.csv:
 
 ESBUILD=./node_modules/.bin/esbuild --minify --bundle --sourcemap
 
-area bars datatable gallery gauge geojson sensors sortable:
+area bars circles datatable gallery gauge geojson sensors sortable:
 	@$(ESBUILD) --outfile="$@/$@.min.js" "$@/$@.js"
 
-.PHONY: area bars datatable gallery gauge geojson sensors sortable */*.js server
+.PHONY: area bars circles datatable gallery gauge geojson sensors sortable */*.js server

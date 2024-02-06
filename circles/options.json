@@ -1,0 +1,13 @@
+{
+	"question": "O que você achou?",
+	"options": [
+		{ "value": -1, "title": "Péssimo" },
+		{ "value": 0, "title": "Muito ruim" },
+		{ "value": 1, "title": "Ruim" },
+		{ "value": 2, "title": "Regular" },
+		{ "value": 3, "title": "Bom" },
+		{ "value": 4, "title": "Muito bom" },
+		{ "value": 5, "title": "Ótimo" },
+		{ "value": 6, "title": "Excelente" }
+	]
+}
