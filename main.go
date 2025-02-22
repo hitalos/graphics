@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -99,8 +100,16 @@ func main() {
 
 	r.Handle("/*", http.FileServer(http.Dir("./")))
 
+	s := http.Server{
+		Addr:         ":8000",
+		Handler:      r,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  10 * time.Second,
+	}
+
 	log.Println("Listening on http://0.0.0.0:8000")
-	if err := http.ListenAndServe(":8000", r); err != nil {
+	if err := s.ListenAndServe(); err != nil {
 		log.Fatalln(err)
 	}
 }
