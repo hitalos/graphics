@@ -90,7 +90,11 @@ func loadValue(command string) http.HandlerFunc {
 
 func main() {
 	r := chi.NewRouter()
-	r.Use(middleware.Logger, middleware.Compress(6))
+	r.Use(
+		middleware.Logger,
+		middleware.NewCompressor(6, "application/json", "text/*").Handler,
+		allowedHosts([]string{"0.0.0.0:8000"}),
+	)
 
 	r.Get("/cases.json", getJSON("cases.csv"))
 
@@ -111,5 +115,20 @@ func main() {
 	log.Println("Listening on http://0.0.0.0:8000")
 	if err := s.ListenAndServe(); err != nil {
 		log.Fatalln(err)
+	}
+}
+
+func allowedHosts(hosts []string) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			for _, host := range hosts {
+				if r.Host == host {
+					next.ServeHTTP(w, r)
+					return
+				}
+			}
+
+			http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
+		})
 	}
 }
